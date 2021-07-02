@@ -1,5 +1,4 @@
 # Simple text-based 1-player game of Blackjack.
-
 # Import required modules.
 import random
 import sys
@@ -20,6 +19,9 @@ dealer_cards = []
 player_cards = []
 dealer_pick = []
 player_pick = []
+# Initialise list to contain and track Aces values.
+player_aces = []
+dealer_aces = []
 # Initialise results list, list item 0 is dealer result, list item 1 is player result.
 results = [0, 0]
 # Initialise global variable to track game progress.
@@ -56,9 +58,11 @@ def main(player_name):
     # populate card deck with all cards.
     for i in list(product(values, suits)):
         deck.append(i)
-    # reset results list indexes to 0, clear dealers and players cards, and dealers and players visible cards.
+    # reset results list indexes to 0, clear dealers and players cards, dealer and player aces, and dealers and players visible cards.
     results.insert(0, 0)
     results.insert(1, 0)
+    dealer_aces.clear()
+    player_aces.clear()
     dealer_cards.clear()
     player_cards.clear()
     dealer_pick.clear()
@@ -76,8 +80,14 @@ def deal():
         pickcard()
         player_cards.append(pickcard())
     dealer_pick.append(dealer_cards[0])
+    # If card is an Ace, append the value it was assigned to the dealer aces list.
+    if dealer_cards[0][0] == 'Ace':
+        dealer_aces.append(10)
     for i in range(2):
         player_pick.append(player_cards[i])
+        # If card is an Ace, append the value it was assigned to the player aces list.
+        if player_cards[i][0] == 'Ace':
+            player_aces.append(10)
 
 
 # pickcard() function picks cards at random and returns the picked card.
@@ -118,7 +128,15 @@ def turn(number, player_choice, player_name):
         # If player chooses to hit, reveals another player card and total hand value.
         if player_choice == 'H':
             player_pick.append(player_cards[number + 1])
+            # If card is an Ace, append the value it was assigned to the player aces list.
+            if player_pick[number + 1][0] == 'Ace':
+                player_aces.append(count(player_pick[number+1][0], player_total))
             player_total += count(player_pick[number + 1][0], player_total)
+            # Check if previous cards contain Aces, if so, check if player has gone bust, if so remove 9 so Ace becomes worth 1 instead of 10.
+            for i in range(len(player_aces)):
+                if player_aces[i] == 10 and player_total > 21:
+                    player_aces[i] = 1
+                    player_total -= 9
             results.insert(0, dealer_total)
             results.insert(1, player_total)
             showcards(player_name)
@@ -127,7 +145,15 @@ def turn(number, player_choice, player_name):
             global gameover
             gameover = True
             dealer_pick.append(dealer_cards[1])
+            # If card is an Ace, append the value it was assigned to the dealer aces list.
+            if dealer_pick[1][0] == 'Ace':
+                player_aces.append(10)
             dealer_total += count(dealer_pick[1][0], dealer_total)
+            # Check if previous cards contain Aces, if so, check if dealer has gone bust, if so remove 9 so Ace becomes worth 1 instead of 10.
+            for i in range(len(dealer_aces)):
+                if dealer_aces[i] == 10 and player_total > 21:
+                    dealer_aces[i] = 1
+                    dealer_total -= 9
             results.insert(0, dealer_total)
             results.insert(1, player_total)
             showcards(player_name)
@@ -137,7 +163,13 @@ def turn(number, player_choice, player_name):
                     print('\n' + str.center('Dealer Hits.', width) + '\n')
                     sleep(1)
                     dealer_pick.append(dealer_cards[i])
+                    if dealer_pick[i][0] == 'Ace':
+                        player_aces.append(count(dealer_pick[i][0], player_total))
                     dealer_total += count(dealer_pick[i][0], dealer_total)
+                    # Check if previous cards contain Aces, if so, check if Dealer has gone bust, if so remove 9 so Ace becomes worth 1 instead of 10.
+                    for card in range(len(dealer_pick) - 1):
+                        if dealer_pick[card][1] == 'Ace' and dealer_total > 21:
+                            dealer_total_total -= 9
                     results.insert(0, dealer_total)
                     results.insert(1, player_total)
                     showcards(player_name)

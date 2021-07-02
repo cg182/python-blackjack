@@ -82,12 +82,12 @@ def deal():
     dealer_pick.append(dealer_cards[0])
     # If card is an Ace, append the value it was assigned to the dealer aces list.
     if dealer_cards[0][0] == 'Ace':
-        dealer_aces.append(10)
+        dealer_aces.append(11)
     for i in range(2):
         player_pick.append(player_cards[i])
         # If card is an Ace, append the value it was assigned to the player aces list.
         if player_cards[i][0] == 'Ace':
-            player_aces.append(10)
+            player_aces.append(11)
 
 
 # pickcard() function picks cards at random and returns the picked card.
@@ -132,11 +132,11 @@ def turn(number, player_choice, player_name):
             if player_pick[number + 1][0] == 'Ace':
                 player_aces.append(count(player_pick[number+1][0], player_total))
             player_total += count(player_pick[number + 1][0], player_total)
-            # Check if previous cards contain Aces, if so, check if player has gone bust, if so remove 9 so Ace becomes worth 1 instead of 10.
+            # Check if previous cards contain Aces, if so, check if player has gone bust, if so remove 10 so Ace becomes worth 1 instead of 11.
             for i in range(len(player_aces)):
-                if player_aces[i] == 10 and player_total > 21:
+                if player_aces[i] == 11 and player_total > 21:
                     player_aces[i] = 1
-                    player_total -= 9
+                    player_total -= 10
             results.insert(0, dealer_total)
             results.insert(1, player_total)
             showcards(player_name)
@@ -147,13 +147,13 @@ def turn(number, player_choice, player_name):
             dealer_pick.append(dealer_cards[1])
             # If card is an Ace, append the value it was assigned to the dealer aces list.
             if dealer_pick[1][0] == 'Ace':
-                player_aces.append(10)
+                dealer_aces.append(11)
             dealer_total += count(dealer_pick[1][0], dealer_total)
-            # Check if previous cards contain Aces, if so, check if dealer has gone bust, if so remove 9 so Ace becomes worth 1 instead of 10.
-            for i in range(len(dealer_aces)):
-                if dealer_aces[i] == 10 and player_total > 21:
-                    dealer_aces[i] = 1
-                    dealer_total -= 9
+            # Check if previous cards contain Aces, if so, check if dealer has gone bust, if so remove 10 so Ace becomes worth 1 instead of 11.
+            for ace in range(len(dealer_aces)):
+                if dealer_aces[ace] == 11 and dealer_total > 21:
+                    dealer_aces[ace] = 1
+                    dealer_total -= 10
             results.insert(0, dealer_total)
             results.insert(1, player_total)
             showcards(player_name)
@@ -166,10 +166,11 @@ def turn(number, player_choice, player_name):
                     if dealer_pick[i][0] == 'Ace':
                         player_aces.append(count(dealer_pick[i][0], player_total))
                     dealer_total += count(dealer_pick[i][0], dealer_total)
-                    # Check if previous cards contain Aces, if so, check if Dealer has gone bust, if so remove 9 so Ace becomes worth 1 instead of 10.
-                    for card in range(len(dealer_pick) - 1):
-                        if dealer_pick[card][1] == 'Ace' and dealer_total > 21:
-                            dealer_total_total -= 9
+                    # Check if previous cards contain Aces, if so, check if Dealer has gone bust, if so remove 10 so Ace becomes worth 1 instead of 11.
+                    for ace in range(len(dealer_aces)):
+                        if dealer_aces[ace] == 11 and dealer_total > 21:
+                            dealer_aces[ace] = 1
+                            dealer_total -= 10
                     results.insert(0, dealer_total)
                     results.insert(1, player_total)
                     showcards(player_name)
@@ -180,10 +181,10 @@ def turn(number, player_choice, player_name):
 # Determine card value and return this.
 def count(card, player):
     if card == 'Ace':
-        if player > 11:
+        if player > 10:
             return 1
-        elif player <= 11:
-            return 10
+        elif player <= 10:
+            return 11
     elif str(card) in ['Jack', 'Queen', 'King']:
         return 10
     else:

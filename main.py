@@ -170,6 +170,7 @@ def action(step, player_name):
         print('Incorrect Input.')
         action(turnnumber, player_name)
 
+
 # function to show current hands for dealer and player, stylized to match colours of each suit.
 def showcards(playername):
     # new line separator
@@ -185,7 +186,7 @@ def showcards(playername):
             print(str.rjust(Fore.BLACK + Back.WHITE + '♣ ' + str(i[0]) + ' ♣', round(width * 0.46)) + Style.RESET_ALL)
         if i[1] == 'Spades':
             print(str.rjust(Fore.BLACK + Back.WHITE + '♠ ' + str(i[0]) + ' ♠', round(width * 0.46)) + Style.RESET_ALL)
-    #print total value of visible cards in dealers hand
+    # print total value of visible cards in dealers hand
     print(str.rjust("Value: " + str(results[0]), round(width * 0.4)))
     sleep(0.5)
     # print all cards currently visible in players hand
@@ -202,6 +203,7 @@ def showcards(playername):
     # print total value of visible cards in players hand
     print(str.rjust("Value: " + str(results[1]) + "\n", round(width * 0.66)))
     sleep(0.5)
+
 
 # determine outcome of game by comparing player and dealer results. Print result then end round. Track overall wins/losses within wins_losses list
 def game_result(player_name):
@@ -231,10 +233,12 @@ def game_result(player_name):
         # End round.
         gameend(player_name)
 
+
 # Ends current round, presents current wins and losses stats and triggers playagain() function with the current player name.
 def gameend(player_name):
     print(str.center('Wins: ' + str(wins_losses[0]) + ', Losses: ' + str(wins_losses[1]), width))
     playagain(player_name)
+
 
 # Prompts user to play again, if they choose to do so, passes their name to the main function so that it does not need to be entered again. If they wish to quit, ends execution.
 def playagain(player_name):
@@ -246,7 +250,8 @@ def playagain(player_name):
     else:
         main(player_name)
 
-#Initial input request to start script after showing welcome banner. 
+
+# Initial input request to start script after showing welcome banner.
 if input('\n' + str.center('Press Enter to start or type Q to quit!', width) + '\n') not in ['Q', 'q']:
     main('')
 else:

@@ -158,7 +158,7 @@ def turn(number, player_choice, player_name):
             if dealer_total >= 17:
                 game_result(player_name)
             # If dealers hand is less than 17, dealer will hit and take another card. This repeats until the hand is over 17.
-            elif dealer_total < 17:
+            else:
                 for i in range(2, len(dealer_cards)-1):
                     print('\n' + str.center('Dealer Hits.', width) + '\n')
                     sleep(1)

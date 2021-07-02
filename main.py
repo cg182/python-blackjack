@@ -75,9 +75,7 @@ def main(player_name):
 # Deal function picks cards one by one, removing them from the deck, and adding them to dealer_cards and player_cards lists until the deck is empty.
 def deal():
     while len(deck) > 0:
-        pickcard()
         dealer_cards.append(pickcard())
-        pickcard()
         player_cards.append(pickcard())
     dealer_pick.append(dealer_cards[0])
     # If card is an Ace, append the value it was assigned to the dealer aces list.
@@ -119,10 +117,14 @@ def turn(number, player_choice, player_name):
         dealer_total += count(dealer_pick[0][0], dealer_total)
         player_total += count(player_pick[0][0], player_total)
         player_total += count(player_pick[1][0], player_total)
+        player_total = 21
         results.insert(0, dealer_total)
         results.insert(1, player_total)
         # Show dealer and player cards and hand values.
         showcards(player_name)
+        # If player has natural Blackjack then instant win.
+        if player_total == 21:
+            game_result(player_name)
     # Subsequent turns
     elif number > 0:
         # If player chooses to hit, reveals another player card and total hand value.
@@ -149,17 +151,15 @@ def turn(number, player_choice, player_name):
             if dealer_pick[1][0] == 'Ace':
                 dealer_aces.append(11)
             dealer_total += count(dealer_pick[1][0], dealer_total)
-            # Check if previous cards contain Aces, if so, check if dealer has gone bust, if so remove 10 so Ace becomes worth 1 instead of 11.
-            for ace in range(len(dealer_aces)):
-                if dealer_aces[ace] == 11 and dealer_total > 21:
-                    dealer_aces[ace] = 1
-                    dealer_total -= 10
             results.insert(0, dealer_total)
             results.insert(1, player_total)
             showcards(player_name)
-            for i in range(2, len(dealer_cards)):
-                # If dealers hand is less than 17, dealer will hit and take another card. This repeats until the hand is over 17.
-                while dealer_total < 17:
+            # If total is over 17 end game.
+            if dealer_total >= 17:
+                game_result(player_name)
+            # If dealers hand is less than 17, dealer will hit and take another card. This repeats until the hand is over 17.
+            elif dealer_total < 17:
+                for i in range(2, len(dealer_cards)-1):
                     print('\n' + str.center('Dealer Hits.', width) + '\n')
                     sleep(1)
                     dealer_pick.append(dealer_cards[i])
@@ -174,8 +174,9 @@ def turn(number, player_choice, player_name):
                     results.insert(0, dealer_total)
                     results.insert(1, player_total)
                     showcards(player_name)
-    # Show game results.
-    game_result(player_name)
+                    if dealer_total >= 17:
+                        # Show game results.
+                        game_result(player_name)
 
 
 # Determine card value and return this.

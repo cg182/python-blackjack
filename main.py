@@ -117,14 +117,10 @@ def turn(number, player_choice, player_name):
         dealer_total += count(dealer_pick[0][0], dealer_total)
         player_total += count(player_pick[0][0], player_total)
         player_total += count(player_pick[1][0], player_total)
-        player_total = 21
         results.insert(0, dealer_total)
         results.insert(1, player_total)
         # Show dealer and player cards and hand values.
         showcards(player_name)
-        # If player has natural Blackjack then instant win.
-        if player_total == 21:
-            game_result(player_name)
     # Subsequent turns
     elif number > 0:
         # If player chooses to hit, reveals another player card and total hand value.
@@ -154,12 +150,12 @@ def turn(number, player_choice, player_name):
             results.insert(0, dealer_total)
             results.insert(1, player_total)
             showcards(player_name)
-            # If total is over 17 end game.
-            if dealer_total >= 17:
-                game_result(player_name)
-            # If dealers hand is less than 17, dealer will hit and take another card. This repeats until the hand is over 17.
-            else:
+            # If dealers hand is less than 17, dealer will hit and take another card. This repeats until the hand is equal to or over 17.
+            while dealer_total < 17:
                 for i in range(2, len(dealer_cards)-1):
+                    #exit while loop and continue once dealer_total is 17 or over.
+                    if dealer_total >= 17:
+                        continue
                     print('\n' + str.center('Dealer Hits.', width) + '\n')
                     sleep(1)
                     dealer_pick.append(dealer_cards[i])
@@ -174,9 +170,8 @@ def turn(number, player_choice, player_name):
                     results.insert(0, dealer_total)
                     results.insert(1, player_total)
                     showcards(player_name)
-                    if dealer_total >= 17:
-                        # Show game results.
-                        game_result(player_name)
+    # Check results after each turn
+    game_result(player_name)
 
 
 # Determine card value and return this.

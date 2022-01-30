@@ -30,9 +30,7 @@ gameover = False
 wins_losses = [0, 0]
 
 # ASCII art welcome message.
-print(Fore.LIGHTRED_EX + str.center(
-    "__        _______ _     ____ ___  __  __ _____   _____ ___    ______   _______ _   _  ___  _   _   ____  _        _    ____ _  __   _   _    ____ _  __ ",
-    width))
+print(Fore.LIGHTRED_EX + str.center("__        _______ _     ____ ___  __  __ _____   _____ ___    ______   _______ _   _  ___  _   _   ____  _        _    ____ _  __   _   _    ____ _  __ ", width))
 print(str.center(
     "\ \      / / ____| |   / ___/ _ \|  \/  | ____| |_   _/ _ \  |  _ \ \ / /_   _| | | |/ _ \| \ | | | __ )| |      / \  / ___| |/ /  | | / \  / ___| |/ / ",
     width))
@@ -153,7 +151,7 @@ def turn(number, player_choice, player_name):
             # If dealers hand is less than 17, dealer will hit and take another card. This repeats until the hand is equal to or over 17.
             while dealer_total < 17:
                 for i in range(2, len(dealer_cards)-1):
-                    #exit while loop and continue once dealer_total is 17 or over.
+                    # exit while loop and continue once dealer_total is 17 or over.
                     if dealer_total >= 17:
                         continue
                     print('\n' + str.center('Dealer Hits.', width) + '\n')

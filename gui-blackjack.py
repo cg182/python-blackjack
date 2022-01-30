@@ -1,9 +1,9 @@
 # import dependencies
-import threading
 import mttkinter.mtTkinter as tK
 from PIL import ImageTk, Image
 import random
 from itertools import product
+
 #set fixed card width and heights
 cardwidth = 68
 cardheight = 95
@@ -187,8 +187,8 @@ def game_result():
                 gameend()
             else:
                 turn_counter +=1
-                turn(turn_counter, 'S')
                 gameover = True
+                turn(turn_counter, 'S')
         if results[1] > 21:
             wins_losses[1] += 1
             message.configure(text='You went bust!\nDealer Wins.')
@@ -313,4 +313,3 @@ player_label.config(font=("Arial Bold", 16))
 message = tK.Label(text="")
 message.config(font=("Arial Bold", 14))
 window.mainloop()
-
